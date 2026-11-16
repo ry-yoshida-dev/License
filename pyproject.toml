@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "license-kit"
+version = "0.1.0"
+authors = [
+    { name = "Ryuto Yoshida" },
+]
+description = "Licenses of code, model weights, and datasets defined by their terms, to assess whether a use is permitted and what it requires."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/ry-yoshida-dev/License"
+"Bug Tracker" = "https://github.com/ry-yoshida-dev/License/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+license_kit = ["py.typed"]
+
+[tool.pytest]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib"]
+strict = true
+
+[tool.uv]
+exclude-newer = "7 days"
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.40.2",
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
+
+[tool.mypy]
+files = ["src", "tests"]
+strict = true
+
+[tool.basedpyright]
+include = ["src", "tests"]
+typeCheckingMode = "recommended"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "D", "A", "C4", "SIM", "RET", "PIE", "PT", "PERF", "RUF", "FBT", "ISC"]
+# Only public classes, methods, and functions need docstrings, and multi-line ones are the local style.
+# ISC003 prefers implicit concatenation, which the local style forbids.
+ignore = ["D100", "D104", "D105", "D200", "ISC003"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]
