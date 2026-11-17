@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from .narrower_use_kind import NarrowerUseKind, find_broader_kinds
 from .use_kind import UseKind
 
 
@@ -8,7 +9,8 @@ class IntendedUse:
     """
     How a work is going to be used, item by item, to be assessed against the terms of its license.
 
-    Every item must be stated, so that a use is never assessed on an item its author forgot.
+    Every item must be stated, so that a use is never assessed on an item its author forgot. Packages whose terms
+    draw finer lines subclass it, add the items they need, and override `narrower_kinds`.
 
     Attributes
     ----------
@@ -33,6 +35,11 @@ class IntendedUse:
     is_offered_over_network : bool
         Whether third parties use software or a model that runs the work over a network without receiving copies of
         it, such as a hosted application or an inference API.
+
+    Raises
+    ------
+    ValueError
+        If a narrower kind of use narrows a kind the items do not involve.
     """
 
     is_commercial: bool
@@ -43,16 +50,46 @@ class IntendedUse:
     is_redistributed: bool
     is_offered_over_network: bool
 
+    def __post_init__(self) -> None:
+        broad_kinds: frozenset[UseKind] = self._broad_kinds
+        for kind in self.narrower_kinds:
+            broadest: UseKind | NarrowerUseKind = find_broader_kinds(kind)[-1]
+            if broadest not in broad_kinds:
+                raise ValueError(f"{kind!r} narrows {broadest}, which this use does not involve.")
+
     @property
-    def involved_kinds(self) -> frozenset[UseKind]:
+    def narrower_kinds(self) -> frozenset[NarrowerUseKind]:
+        """
+        Narrower kinds of use this use involves, in place of the broader kinds they narrow.
+
+        Subclasses override it to tell the narrower kinds their items bring in, each narrowing a kind the items of
+        this class involve.
+
+        Returns
+        -------
+        frozenset[NarrowerUseKind]
+            None here.
+        """
+        return frozenset()
+
+    @property
+    def involved_kinds(self) -> frozenset[UseKind | NarrowerUseKind]:
         """
         Kinds of use that a license must permit for this use to go ahead.
 
         Returns
         -------
-        frozenset[UseKind]
-            Every kind of use this use involves.
+        frozenset[UseKind | NarrowerUseKind]
+            Every kind of use this use involves, with each narrower kind in place of the kinds it narrows.
         """
+        narrower: frozenset[NarrowerUseKind] = self.narrower_kinds
+        replaced: set[UseKind | NarrowerUseKind] = {
+            broader for kind in narrower for broader in find_broader_kinds(kind)
+        }
+        return frozenset((self._broad_kinds | narrower) - replaced)
+
+    @property
+    def _broad_kinds(self) -> frozenset[UseKind]:
         kinds: set[UseKind] = set()
         if self.is_commercial:
             kinds.add(UseKind.COMMERCIAL_USE)

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from .definition import LicenseDefinition
+from .narrower_use_kind import NarrowerUseKind
 from .permission import Permission
 from .use_kind import UseKind
 
@@ -14,7 +15,7 @@ class Restriction:
     ----------
     license : LicenseDefinition
         License that restricts the use.
-    kind : UseKind
+    kind : UseKind | NarrowerUseKind
         Kind of use it restricts.
     permission : Permission
         What the license states for that kind of use.
@@ -26,7 +27,7 @@ class Restriction:
     """
 
     license: LicenseDefinition
-    kind: UseKind
+    kind: UseKind | NarrowerUseKind
     permission: Permission
 
     def __post_init__(self) -> None:

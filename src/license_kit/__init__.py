@@ -4,6 +4,7 @@ from .definition import LicenseDefinition
 from .expression import LicenseExpression
 from .intended_use import IntendedUse
 from .license import License
+from .narrower_use_kind import NarrowerUseKind, find_broader_kinds
 from .obligation import Obligation
 from .obligation_condition import ObligationCondition
 from .obligation_trigger import ObligationTrigger
@@ -23,6 +24,7 @@ __all__: list[str] = [
     "LicenseDefinition",
     "LicenseExpression",
     "LicenseTerms",
+    "NarrowerUseKind",
     "Obligation",
     "ObligationCondition",
     "ObligationTrigger",
@@ -32,4 +34,5 @@ __all__: list[str] = [
     "UseAssessment",
     "UseKind",
     "WorkScope",
+    "find_broader_kinds",
 ]

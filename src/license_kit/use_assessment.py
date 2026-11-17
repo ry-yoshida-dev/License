@@ -9,7 +9,6 @@ from .permission import Permission
 from .requirement import Requirement
 from .restriction import Restriction
 from .terms import LicenseTerms
-from .use_kind import UseKind
 from .work_scope import WorkScope
 
 
@@ -145,5 +144,5 @@ def _is_restricting_further(license_: LicenseDefinition) -> bool:
     return (
         is_copyleft_beyond_files
         or terms.downstream_terms is not None
-        or any(terms.permission_for(kind) is not Permission.ALLOWED for kind in UseKind)
+        or any(terms.permission_for(kind) is not Permission.ALLOWED for kind in terms.stated_kinds)
     )

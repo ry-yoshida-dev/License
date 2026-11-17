@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from .narrower_use_kind import NarrowerUseKind
 from .obligation import Obligation
 from .obligation_condition import ObligationCondition
 from .permission import Permission
@@ -10,6 +11,9 @@ from .use_kind import UseKind
 class LicenseTerms:
     """
     Terms of a license, item by item: which kinds of use it permits, and when each obligation comes into effect.
+
+    Terms that treat a narrower kind of use differently from the kind it narrows are a subclass that adds an item for
+    it, overrides `permission_for` to read that item, and extends `stated_kinds`.
 
     Attributes
     ----------
@@ -69,20 +73,34 @@ class LicenseTerms:
                 )
                 raise ValueError(message)
 
-    def permission_for(self, kind: UseKind) -> Permission:
+    @property
+    def stated_kinds(self) -> tuple[UseKind | NarrowerUseKind, ...]:
+        """
+        Kinds of use these terms state a permission for item by item.
+
+        Returns
+        -------
+        tuple[UseKind | NarrowerUseKind, ...]
+            Every `UseKind`; subclasses add the narrower kinds they state.
+        """
+        return tuple(UseKind)
+
+    def permission_for(self, kind: UseKind | NarrowerUseKind) -> Permission:
         """
         Whether these terms permit one kind of use.
 
         Parameters
         ----------
-        kind : UseKind
+        kind : UseKind | NarrowerUseKind
             Kind of use.
 
         Returns
         -------
         Permission
-            The permission the terms state for that kind.
+            The permission the terms state for that kind, or for the kind it narrows when they state none for it.
         """
+        if not isinstance(kind, UseKind):
+            return self.permission_for(kind.broader)
         match kind:
             case UseKind.COMMERCIAL_USE:
                 return self.commercial_use
@@ -133,12 +151,12 @@ class LicenseTerms:
         Returns
         -------
         bool
-            True when every kind of use is ``ALLOWED`` and nothing ever binds the user's own work: no source
+            True when every stated kind of use is ``ALLOWED`` and nothing ever binds the user's own work: no source
             disclosure, downstream terms, or share-alike. Attribution and notices may still be required.
         """
         return (
             self.share_alike is None
             and self.source_disclosure is None
             and self.downstream_terms is None
-            and all(self.permission_for(kind) is Permission.ALLOWED for kind in UseKind)
+            and all(self.permission_for(kind) is Permission.ALLOWED for kind in self.stated_kinds)
         )

@@ -15,6 +15,7 @@ Pytest suite for the `license_kit` package. Tests that need an intended use deri
 | [test_combination.py](./test_combination.py) | `TestLicenseCombination`: every part's restrictions and requirements apply, and a choice inside is resolved for the whole combination. |
 | [test_terms.py](./test_terms.py) | `TestLicenseTerms`: each kind of use and obligation reads its item, permissiveness excludes source disclosure, downstream terms, and copyleft, and inconsistent terms are refused. |
 | [test_intended_use.py](./test_intended_use.py) | `TestIntendedUse`: each item of a use involves its kind of use. |
+| [test_narrower_use_kind.py](./test_narrower_use_kind.py) | `TestNarrowerUseKind`: a narrower kind stands in for the kinds it narrows, terms unaware of it answer for the broader kind, subclassed terms answer for it, and cycles or narrowing an uninvolved kind are refused. |
 | [test_use_assessment.py](./test_use_assessment.py) | `TestUseAssessment`: restrictions and requirements are attributed to their license, copyleft of several licenses conflicts unless limited to modified files, and copyleft over a work that takes in other material conflicts with licenses adding restrictions. |
 | [test_restriction.py](./test_restriction.py) | `TestRestriction`: an allowed kind of use is refused as a restriction. |
 | [test_permission.py](./test_permission.py) | `TestPermission`: permissions rank by restrictiveness and combine into the more restrictive. |

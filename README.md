@@ -13,7 +13,7 @@ Well-known licenses, by SPDX identifier, grouped by how far their copyleft reach
 | Modified work | `LGPL-2.1-only`, `LGPL-2.1-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `CC-BY-SA-4.0` | `CC-BY-NC-SA-4.0` |
 | Combined work | `GPL-2.0-only`, `GPL-2.0-or-later`, `GPL-3.0-only`, `GPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`, `ODbL-1.0` | |
 
-Works under several licenses are described with `LicenseChoice` (SPDX `OR`) and `LicenseCombination` (SPDX `AND`), which nest.
+Works under several licenses are described with `LicenseChoice` (SPDX `OR`) and `LicenseCombination` (SPDX `AND`), which nest. Terms that treat part of a kind of use differently, such as data whose terms forbid commercial use except work commissioned by a public body, are described by subclassing `IntendedUse` and `LicenseTerms` with a `NarrowerUseKind` of your own.
 
 ## Installation
 
