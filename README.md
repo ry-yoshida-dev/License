@@ -56,6 +56,7 @@ print(sorted(obligation.value for obligation in obligations))  # ['share_alike',
 # Terms that match no well-known license are defined item by item.
 dataset_license = LicenseDefinition(
     title="Terms of a municipal dataset",
+    short_title="Municipal data",
     identifier="LicenseRef-Municipal-Data",
     url="https://example.com/terms",
     terms=LicenseTerms(

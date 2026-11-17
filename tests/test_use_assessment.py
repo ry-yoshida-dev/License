@@ -19,6 +19,7 @@ from license_kit import (
 
 CUSTOM: LicenseDefinition = LicenseDefinition(
     title="Municipal dataset terms",
+    short_title="Municipal data",
     terms=License.CC_BY_NC_4_0.definition.terms,
     identifier="LicenseRef-Municipal-Data",
     url=None,

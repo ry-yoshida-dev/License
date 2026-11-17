@@ -14,8 +14,9 @@ class License(Enum):
     Well-known license that a work, such as code, model weights, or a dataset, is distributed under.
 
     Values are SPDX license identifiers, or ``LicenseRef-`` identifiers for licenses SPDX does not list, so that
-    ``License("MIT")`` looks a member up. `definition` gives the title, the URL of the license text, and the terms;
-    titles are SPDX full names where SPDX lists the license.
+    ``License("MIT")`` looks a member up. `definition` gives the title, the short title, the URL of the license text,
+    and the terms; titles are SPDX full names where SPDX lists the license, and short titles the names licensors and
+    users abbreviate them to.
 
     Attributes
     ----------
@@ -342,49 +343,75 @@ _RESEARCH_ONLY: LicenseTerms = LicenseTerms(
 def _definition(member: License) -> LicenseDefinition:
     match member:
         case License.MIT:
-            return _define(member, "MIT License", "https://opensource.org/license/mit", _NOTICE)
+            return _define(member, "MIT", "MIT License", "https://opensource.org/license/mit", _NOTICE)
         case License.BSD_2_CLAUSE:
             return _define(
-                member, 'BSD 2-Clause "Simplified" License', "https://opensource.org/license/bsd-2-clause", _NOTICE
+                member,
+                "BSD 2-Clause",
+                'BSD 2-Clause "Simplified" License',
+                "https://opensource.org/license/bsd-2-clause",
+                _NOTICE,
             )
         case License.BSD_3_CLAUSE:
             return _define(
                 member,
+                "BSD 3-Clause",
                 'BSD 3-Clause "New" or "Revised" License',
                 "https://opensource.org/license/bsd-3-clause",
                 _NOTICE,
             )
         case License.APACHE_2_0:
             return _define(
-                member, "Apache License 2.0", "https://www.apache.org/licenses/LICENSE-2.0", _NOTICE_AND_CHANGES
+                member,
+                "Apache 2.0",
+                "Apache License 2.0",
+                "https://www.apache.org/licenses/LICENSE-2.0",
+                _NOTICE_AND_CHANGES,
             )
         case License.MPL_2_0:
             return _define(
-                member, "Mozilla Public License 2.0", "https://www.mozilla.org/en-US/MPL/2.0/", _FILE_COPYLEFT
+                member,
+                "MPL 2.0",
+                "Mozilla Public License 2.0",
+                "https://www.mozilla.org/en-US/MPL/2.0/",
+                _FILE_COPYLEFT,
             )
         case License.LGPL_2_1_ONLY:
-            return _define(member, "GNU Lesser General Public License v2.1 only", _LGPL_2_1_URL, _LIBRARY_COPYLEFT)
+            return _define(
+                member, "LGPLv2.1", "GNU Lesser General Public License v2.1 only", _LGPL_2_1_URL, _LIBRARY_COPYLEFT
+            )
         case License.LGPL_2_1_OR_LATER:
-            return _define(member, "GNU Lesser General Public License v2.1 or later", _LGPL_2_1_URL, _LIBRARY_COPYLEFT)
+            return _define(
+                member, "LGPLv2.1+", "GNU Lesser General Public License v2.1 or later", _LGPL_2_1_URL, _LIBRARY_COPYLEFT
+            )
         case License.LGPL_3_0_ONLY:
-            return _define(member, "GNU Lesser General Public License v3.0 only", _LGPL_3_0_URL, _LIBRARY_COPYLEFT)
+            return _define(
+                member, "LGPLv3", "GNU Lesser General Public License v3.0 only", _LGPL_3_0_URL, _LIBRARY_COPYLEFT
+            )
         case License.LGPL_3_0_OR_LATER:
-            return _define(member, "GNU Lesser General Public License v3.0 or later", _LGPL_3_0_URL, _LIBRARY_COPYLEFT)
+            return _define(
+                member, "LGPLv3+", "GNU Lesser General Public License v3.0 or later", _LGPL_3_0_URL, _LIBRARY_COPYLEFT
+            )
         case License.GPL_2_0_ONLY:
-            return _define(member, "GNU General Public License v2.0 only", _GPL_2_0_URL, _STRONG_COPYLEFT)
+            return _define(member, "GPLv2", "GNU General Public License v2.0 only", _GPL_2_0_URL, _STRONG_COPYLEFT)
         case License.GPL_2_0_OR_LATER:
-            return _define(member, "GNU General Public License v2.0 or later", _GPL_2_0_URL, _STRONG_COPYLEFT)
+            return _define(member, "GPLv2+", "GNU General Public License v2.0 or later", _GPL_2_0_URL, _STRONG_COPYLEFT)
         case License.GPL_3_0_ONLY:
-            return _define(member, "GNU General Public License v3.0 only", _GPL_3_0_URL, _STRONG_COPYLEFT)
+            return _define(member, "GPLv3", "GNU General Public License v3.0 only", _GPL_3_0_URL, _STRONG_COPYLEFT)
         case License.GPL_3_0_OR_LATER:
-            return _define(member, "GNU General Public License v3.0 or later", _GPL_3_0_URL, _STRONG_COPYLEFT)
+            return _define(member, "GPLv3+", "GNU General Public License v3.0 or later", _GPL_3_0_URL, _STRONG_COPYLEFT)
         case License.AGPL_3_0_ONLY:
-            return _define(member, "GNU Affero General Public License v3.0 only", _AGPL_3_0_URL, _NETWORK_COPYLEFT)
+            return _define(
+                member, "AGPLv3", "GNU Affero General Public License v3.0 only", _AGPL_3_0_URL, _NETWORK_COPYLEFT
+            )
         case License.AGPL_3_0_OR_LATER:
-            return _define(member, "GNU Affero General Public License v3.0 or later", _AGPL_3_0_URL, _NETWORK_COPYLEFT)
+            return _define(
+                member, "AGPLv3+", "GNU Affero General Public License v3.0 or later", _AGPL_3_0_URL, _NETWORK_COPYLEFT
+            )
         case License.CC0_1_0:
             return _define(
                 member,
+                "CC0 1.0",
                 "Creative Commons Zero v1.0 Universal",
                 "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
                 _PUBLIC_DOMAIN,
@@ -392,6 +419,7 @@ def _definition(member: License) -> LicenseDefinition:
         case License.CC_BY_4_0:
             return _define(
                 member,
+                "CC BY 4.0",
                 "Creative Commons Attribution 4.0 International",
                 "https://creativecommons.org/licenses/by/4.0/legalcode",
                 _NOTICE_AND_CHANGES,
@@ -399,6 +427,7 @@ def _definition(member: License) -> LicenseDefinition:
         case License.CC_BY_SA_4_0:
             return _define(
                 member,
+                "CC BY-SA 4.0",
                 "Creative Commons Attribution Share Alike 4.0 International",
                 "https://creativecommons.org/licenses/by-sa/4.0/legalcode",
                 _SHARE_ALIKE,
@@ -406,6 +435,7 @@ def _definition(member: License) -> LicenseDefinition:
         case License.CC_BY_ND_4_0:
             return _define(
                 member,
+                "CC BY-ND 4.0",
                 "Creative Commons Attribution No Derivatives 4.0 International",
                 "https://creativecommons.org/licenses/by-nd/4.0/legalcode",
                 _NO_DERIVATIVES,
@@ -413,6 +443,7 @@ def _definition(member: License) -> LicenseDefinition:
         case License.CC_BY_NC_4_0:
             return _define(
                 member,
+                "CC BY-NC 4.0",
                 "Creative Commons Attribution Non Commercial 4.0 International",
                 "https://creativecommons.org/licenses/by-nc/4.0/legalcode",
                 _NON_COMMERCIAL,
@@ -420,6 +451,7 @@ def _definition(member: License) -> LicenseDefinition:
         case License.CC_BY_NC_SA_4_0:
             return _define(
                 member,
+                "CC BY-NC-SA 4.0",
                 "Creative Commons Attribution Non Commercial Share Alike 4.0 International",
                 "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode",
                 _NON_COMMERCIAL_SHARE_ALIKE,
@@ -427,6 +459,7 @@ def _definition(member: License) -> LicenseDefinition:
         case License.CC_BY_NC_ND_4_0:
             return _define(
                 member,
+                "CC BY-NC-ND 4.0",
                 "Creative Commons Attribution Non Commercial No Derivatives 4.0 International",
                 "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
                 _NON_COMMERCIAL_NO_DERIVATIVES,
@@ -434,6 +467,7 @@ def _definition(member: License) -> LicenseDefinition:
         case License.ODBL_1_0:
             return _define(
                 member,
+                "ODbL 1.0",
                 "Open Data Commons Open Database License v1.0",
                 "https://opendatacommons.org/licenses/odbl/1-0/",
                 _DATABASE_SHARE_ALIKE,
@@ -441,13 +475,20 @@ def _definition(member: License) -> LicenseDefinition:
         case License.PUBLIC_DATA_LICENSE_1_0:
             return _define(
                 member,
+                "PDL 1.0",
                 "Public Data License (Version 1.0)",
                 "https://www.digital.go.jp/resources/open_data/public_data_license_v1.0",
                 _NOTICE_AND_CHANGES,
             )
         case License.APPLE_MACHINE_LEARNING_RESEARCH_MODEL:
-            return _define(member, "Apple Machine Learning Research Model License Agreement", None, _RESEARCH_ONLY)
+            return _define(
+                member,
+                "Apple ML Research Model",
+                "Apple Machine Learning Research Model License Agreement",
+                None,
+                _RESEARCH_ONLY,
+            )
 
 
-def _define(member: License, title: str, url: str | None, terms: LicenseTerms) -> LicenseDefinition:
-    return LicenseDefinition(title=title, terms=terms, identifier=member.value, url=url)
+def _define(member: License, short_title: str, title: str, url: str | None, terms: LicenseTerms) -> LicenseDefinition:
+    return LicenseDefinition(title=title, short_title=short_title, terms=terms, identifier=member.value, url=url)

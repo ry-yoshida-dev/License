@@ -21,6 +21,8 @@ class LicenseDefinition:
     ----------
     title : str
         Human-readable name of the license.
+    short_title : str
+        Short name of the license for lists and notices, such as ``CC BY 4.0``.
     terms : LicenseTerms
         Terms of the license, item by item.
     identifier : str | None
@@ -32,11 +34,12 @@ class LicenseDefinition:
     Raises
     ------
     ValueError
-        If the title is blank, the identifier is not made of the characters SPDX allows, or the URL is not an absolute
-        HTTP or HTTPS URL.
+        If the title or the short title is blank, the identifier is not made of the characters SPDX allows, or the URL
+        is not an absolute HTTP or HTTPS URL.
     """
 
     title: str
+    short_title: str
     terms: LicenseTerms
     identifier: str | None
     url: str | None
@@ -44,6 +47,8 @@ class LicenseDefinition:
     def __post_init__(self) -> None:
         if not self.title.strip():
             raise ValueError("title must not be blank.")
+        if not self.short_title.strip():
+            raise ValueError("short_title must not be blank.")
         if self.identifier is not None and _IDENTIFIER_PATTERN.fullmatch(self.identifier) is None:
             raise ValueError(
                 f"identifier must be letters, digits, '.', and '-', led by a letter or digit: {self.identifier!r}"

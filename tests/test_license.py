@@ -172,6 +172,9 @@ class TestLicense:
     def test_titles_are_unique(self) -> None:
         assert len({member.definition.title for member in License}) == len(License)
 
+    def test_short_titles_are_unique(self) -> None:
+        assert len({member.definition.short_title for member in License}) == len(License)
+
     def test_only_apple_research_license_lacks_a_canonical_page(self) -> None:
         assert {member for member in License if member.definition.url is None} == {
             License.APPLE_MACHINE_LEARNING_RESEARCH_MODEL
